@@ -1,0 +1,395 @@
+Terminals unused in grammar
+
+   TOK_FLOAT_TYPE
+   '{'
+   '}'
+
+
+State 11 conflicts: 1 reduce/reduce
+
+
+Grammar
+
+    0 $accept: Prog $end
+
+    1 Prog: TOK_MAIN TOK_LCURL Stmts TOK_RCURL
+
+    2 Stmts: %empty
+    3      | Stmt TOK_SEMICOLON Stmts
+
+    4 Stmt: %empty
+    5     | TOK_ID TOK_EQ expr
+    6     | TOK_PRINTLN TOK_ID
+    7     | TOK_PRINTLN expr
+    8     | TOK_ID TOK_ADD TOK_EQ expr
+    9     | TOK_ID TOK_MUL TOK_EQ expr
+
+   10 expr: TOK_INT_NUM
+   11     | TOK_ID
+   12     | TOK_NEG TOK_INT_NUM TOK_RBKT
+   13     | expr TOK_MUL expr
+   14     | expr TOK_ADD expr
+   15     | TOK_LBKT expr TOK_RBKT
+
+
+Terminals, with rules where they appear
+
+$end (0) 0
+'{' (123)
+'}' (125)
+error (256)
+TOK_NEG (258) 12
+TOK_MUL (259) 9 13
+TOK_INT_NUM (260) 10 12
+TOK_FLOAT_TYPE (261)
+TOK_PRINTLN (262) 6 7
+TOK_MAIN (263) 1
+TOK_ID (264) 5 6 8 9 11
+TOK_EQ (265) 5 8 9
+TOK_LCURL (266) 1
+TOK_RCURL (267) 1
+TOK_SEMICOLON (268) 3
+TOK_LBKT (269) 15
+TOK_RBKT (270) 12 15
+TOK_ADD (271) 8 14
+
+
+Nonterminals, with rules where they appear
+
+$accept (19)
+    on left: 0
+Prog (20)
+    on left: 1, on right: 0
+Stmts (21)
+    on left: 2 3, on right: 1 3
+Stmt (22)
+    on left: 4 5 6 7 8 9, on right: 3
+expr (23)
+    on left: 10 11 12 13 14 15, on right: 5 7 8 9 13 14 15
+
+
+State 0
+
+    0 $accept: . Prog $end
+
+    TOK_MAIN  shift, and go to state 1
+
+    Prog  go to state 2
+
+
+State 1
+
+    1 Prog: TOK_MAIN . TOK_LCURL Stmts TOK_RCURL
+
+    TOK_LCURL  shift, and go to state 3
+
+
+State 2
+
+    0 $accept: Prog . $end
+
+    $end  shift, and go to state 4
+
+
+State 3
+
+    1 Prog: TOK_MAIN TOK_LCURL . Stmts TOK_RCURL
+
+    TOK_PRINTLN  shift, and go to state 5
+    TOK_ID       shift, and go to state 6
+
+    TOK_SEMICOLON  reduce using rule 4 (Stmt)
+    $default       reduce using rule 2 (Stmts)
+
+    Stmts  go to state 7
+    Stmt   go to state 8
+
+
+State 4
+
+    0 $accept: Prog $end .
+
+    $default  accept
+
+
+State 5
+
+    6 Stmt: TOK_PRINTLN . TOK_ID
+    7     | TOK_PRINTLN . expr
+
+    TOK_NEG      shift, and go to state 9
+    TOK_INT_NUM  shift, and go to state 10
+    TOK_ID       shift, and go to state 11
+    TOK_LBKT     shift, and go to state 12
+
+    expr  go to state 13
+
+
+State 6
+
+    5 Stmt: TOK_ID . TOK_EQ expr
+    8     | TOK_ID . TOK_ADD TOK_EQ expr
+    9     | TOK_ID . TOK_MUL TOK_EQ expr
+
+    TOK_MUL  shift, and go to state 14
+    TOK_EQ   shift, and go to state 15
+    TOK_ADD  shift, and go to state 16
+
+
+State 7
+
+    1 Prog: TOK_MAIN TOK_LCURL Stmts . TOK_RCURL
+
+    TOK_RCURL  shift, and go to state 17
+
+
+State 8
+
+    3 Stmts: Stmt . TOK_SEMICOLON Stmts
+
+    TOK_SEMICOLON  shift, and go to state 18
+
+
+State 9
+
+   12 expr: TOK_NEG . TOK_INT_NUM TOK_RBKT
+
+    TOK_INT_NUM  shift, and go to state 19
+
+
+State 10
+
+   10 expr: TOK_INT_NUM .
+
+    $default  reduce using rule 10 (expr)
+
+
+State 11
+
+    6 Stmt: TOK_PRINTLN TOK_ID .
+   11 expr: TOK_ID .
+
+    TOK_SEMICOLON  reduce using rule 6 (Stmt)
+    TOK_SEMICOLON  [reduce using rule 11 (expr)]
+    $default       reduce using rule 11 (expr)
+
+
+State 12
+
+   15 expr: TOK_LBKT . expr TOK_RBKT
+
+    TOK_NEG      shift, and go to state 9
+    TOK_INT_NUM  shift, and go to state 10
+    TOK_ID       shift, and go to state 20
+    TOK_LBKT     shift, and go to state 12
+
+    expr  go to state 21
+
+
+State 13
+
+    7 Stmt: TOK_PRINTLN expr .
+   13 expr: expr . TOK_MUL expr
+   14     | expr . TOK_ADD expr
+
+    TOK_MUL  shift, and go to state 22
+    TOK_ADD  shift, and go to state 23
+
+    $default  reduce using rule 7 (Stmt)
+
+
+State 14
+
+    9 Stmt: TOK_ID TOK_MUL . TOK_EQ expr
+
+    TOK_EQ  shift, and go to state 24
+
+
+State 15
+
+    5 Stmt: TOK_ID TOK_EQ . expr
+
+    TOK_NEG      shift, and go to state 9
+    TOK_INT_NUM  shift, and go to state 10
+    TOK_ID       shift, and go to state 20
+    TOK_LBKT     shift, and go to state 12
+
+    expr  go to state 25
+
+
+State 16
+
+    8 Stmt: TOK_ID TOK_ADD . TOK_EQ expr
+
+    TOK_EQ  shift, and go to state 26
+
+
+State 17
+
+    1 Prog: TOK_MAIN TOK_LCURL Stmts TOK_RCURL .
+
+    $default  reduce using rule 1 (Prog)
+
+
+State 18
+
+    3 Stmts: Stmt TOK_SEMICOLON . Stmts
+
+    TOK_PRINTLN  shift, and go to state 5
+    TOK_ID       shift, and go to state 6
+
+    TOK_SEMICOLON  reduce using rule 4 (Stmt)
+    $default       reduce using rule 2 (Stmts)
+
+    Stmts  go to state 27
+    Stmt   go to state 8
+
+
+State 19
+
+   12 expr: TOK_NEG TOK_INT_NUM . TOK_RBKT
+
+    TOK_RBKT  shift, and go to state 28
+
+
+State 20
+
+   11 expr: TOK_ID .
+
+    $default  reduce using rule 11 (expr)
+
+
+State 21
+
+   13 expr: expr . TOK_MUL expr
+   14     | expr . TOK_ADD expr
+   15     | TOK_LBKT expr . TOK_RBKT
+
+    TOK_MUL   shift, and go to state 22
+    TOK_RBKT  shift, and go to state 29
+    TOK_ADD   shift, and go to state 23
+
+
+State 22
+
+   13 expr: expr TOK_MUL . expr
+
+    TOK_NEG      shift, and go to state 9
+    TOK_INT_NUM  shift, and go to state 10
+    TOK_ID       shift, and go to state 20
+    TOK_LBKT     shift, and go to state 12
+
+    expr  go to state 30
+
+
+State 23
+
+   14 expr: expr TOK_ADD . expr
+
+    TOK_NEG      shift, and go to state 9
+    TOK_INT_NUM  shift, and go to state 10
+    TOK_ID       shift, and go to state 20
+    TOK_LBKT     shift, and go to state 12
+
+    expr  go to state 31
+
+
+State 24
+
+    9 Stmt: TOK_ID TOK_MUL TOK_EQ . expr
+
+    TOK_NEG      shift, and go to state 9
+    TOK_INT_NUM  shift, and go to state 10
+    TOK_ID       shift, and go to state 20
+    TOK_LBKT     shift, and go to state 12
+
+    expr  go to state 32
+
+
+State 25
+
+    5 Stmt: TOK_ID TOK_EQ expr .
+   13 expr: expr . TOK_MUL expr
+   14     | expr . TOK_ADD expr
+
+    TOK_MUL  shift, and go to state 22
+    TOK_ADD  shift, and go to state 23
+
+    $default  reduce using rule 5 (Stmt)
+
+
+State 26
+
+    8 Stmt: TOK_ID TOK_ADD TOK_EQ . expr
+
+    TOK_NEG      shift, and go to state 9
+    TOK_INT_NUM  shift, and go to state 10
+    TOK_ID       shift, and go to state 20
+    TOK_LBKT     shift, and go to state 12
+
+    expr  go to state 33
+
+
+State 27
+
+    3 Stmts: Stmt TOK_SEMICOLON Stmts .
+
+    $default  reduce using rule 3 (Stmts)
+
+
+State 28
+
+   12 expr: TOK_NEG TOK_INT_NUM TOK_RBKT .
+
+    $default  reduce using rule 12 (expr)
+
+
+State 29
+
+   15 expr: TOK_LBKT expr TOK_RBKT .
+
+    $default  reduce using rule 15 (expr)
+
+
+State 30
+
+   13 expr: expr . TOK_MUL expr
+   13     | expr TOK_MUL expr .
+   14     | expr . TOK_ADD expr
+
+    $default  reduce using rule 13 (expr)
+
+
+State 31
+
+   13 expr: expr . TOK_MUL expr
+   14     | expr . TOK_ADD expr
+   14     | expr TOK_ADD expr .
+
+    TOK_MUL  shift, and go to state 22
+
+    $default  reduce using rule 14 (expr)
+
+
+State 32
+
+    9 Stmt: TOK_ID TOK_MUL TOK_EQ expr .
+   13 expr: expr . TOK_MUL expr
+   14     | expr . TOK_ADD expr
+
+    TOK_MUL  shift, and go to state 22
+    TOK_ADD  shift, and go to state 23
+
+    $default  reduce using rule 9 (Stmt)
+
+
+State 33
+
+    8 Stmt: TOK_ID TOK_ADD TOK_EQ expr .
+   13 expr: expr . TOK_MUL expr
+   14     | expr . TOK_ADD expr
+
+    TOK_MUL  shift, and go to state 22
+    TOK_ADD  shift, and go to state 23
+
+    $default  reduce using rule 8 (Stmt)
